@@ -1,5 +1,5 @@
 {
-  "name": "walkingrobot",
+  "name": "walkinglib",
   "version": "0.1.0",
   "description": "js framework to control a 4-legged walking robot",
   "main": "lib/app.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/superpingu/WalkingRobot.git"
+    "url": "git+https://github.com/superpingu/WalkingLib.git"
   },
   "author": "superpingu",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/superpingu/WalkingRobot/issues"
+    "url": "https://github.com/superpingu/WalkingLib/issues"
   },
-  "homepage": "https://github.com/superpingu/WalkingRobot#readme"
+  "homepage": "https://github.com/superpingu/WalkingLib#readme"
 }

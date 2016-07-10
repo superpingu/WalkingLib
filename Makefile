@@ -9,4 +9,8 @@ clean:
 
 test:
 	mocha -c --compilers coffee:coffee-script/register
-.PHONY: all watch clean test
+
+link:
+	npm link walkingdriver
+
+.PHONY: all watch clean test link

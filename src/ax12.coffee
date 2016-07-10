@@ -102,7 +102,7 @@ ax12 = (driver) ->
                 newAX = create id
                 newAX.speed currentSpeed
                 newAX.torque currentTorque
-                newAX.presets presets.slice()
+                newAX.preset(k, v, yes) for k, v of presets
                 children.push newAX
                 return newAX
 

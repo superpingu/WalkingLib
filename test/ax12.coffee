@@ -17,7 +17,7 @@ describe 'AX12', ->
             turn : chai.spy()
             LED: chai.spy()
             reset: chai.spy()
-        ax12 = require('../lib/robot/ax12')(driver)
+        ax12 = require('../lib/ax12')(driver)
 
     describe '.position()', ->
         it 'should return the position of the AX12 if the ID is not 0', ->

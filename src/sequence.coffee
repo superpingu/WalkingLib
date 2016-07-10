@@ -13,24 +13,25 @@ module.exports = (robot) ->
     endCallback = null
     stageExec = 0
 
+    pushStep = (func, args) ->
+        sequence[stage].push
+            func: func
+            args: args
+            wait: getParamNames(func).pop() is 'callback'
+            cbProvided: getParamNames(func).length == args.length
+
     sequencify = (obj, key) ->
         if typeof obj[key] is 'function'
             res = (args...) ->
-                sequence[stage].push
-                    func: obj[key]
-                    args: args
-                    wait: getParamNames(obj[key]).pop() is 'callback'
-                    cbProvided: getParamNames(obj[key]).length == args.length
+                pushStep(obj[key], args)
                 return result
-
         else if typeof obj[key] is 'object'
             res = {}
             res[k] = sequencify obj[key], k for k of obj[key]
+        return res
 
-        return res if res?
-
-    result = sequencify(root: robot).root
-    delete result.sequence
+    result = sequencify(root: robot, 'root')
+    delete result.sequence if result.sequence?
 
     nextStage = ->
         if stageExec > stage
@@ -50,9 +51,8 @@ module.exports = (robot) ->
 
         for step in sequence[stage] when step.wait
             waitingSteps++
-            cb = wait.args.pop() if step.cbProvided
-
-            wait.args.push ->
+            cb = step.args.pop() if step.cbProvided
+            step.args.push ->
                 cb?() # call callback if provided
                 # if all the function we're waiting for have called their callback
                 if(++called == waitingSteps)
@@ -69,11 +69,13 @@ module.exports = (robot) ->
         stageExec = stage + 1
         endCallback = null
     result.start = (callback) ->
-        result.done callback
+        result.done callback if callback?
         stageExec = 0
         nextStage()
         return result
-
+    result.run = (func) ->
+        pushStep(func, [])
+        return result
     result.setSeq = (seq) ->
         sequence = seq.slice()
         stage = seq.length - 1
