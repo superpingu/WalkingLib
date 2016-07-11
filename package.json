@@ -1,6 +1,6 @@
 {
   "name": "@superpingu/walkinglib",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "js framework to control a 4-legged walking robot",
   "main": "lib/robot.js",
   "scripts": {
