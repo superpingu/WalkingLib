@@ -1,10 +1,12 @@
 {
-  "name": "walkinglib",
+  "name": "@superpingu/walkinglib",
   "version": "0.1.0",
   "description": "js framework to control a 4-legged walking robot",
-  "main": "lib/app.js",
+  "main": "lib/robot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "make",
+    "install": "make link"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/superpingu/WalkingLib/issues"
   },
-  "homepage": "https://github.com/superpingu/WalkingLib#readme"
+  "homepage": "https://github.com/superpingu/WalkingLib#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-spies": "^0.7.1"
+  }
 }
