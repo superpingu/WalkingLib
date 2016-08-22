@@ -1,13 +1,7 @@
-DEFAULT = 0
-WHEEL = 1
-
 ax12 = (driver) ->
     create = (id) ->
         currentSpeed = -2000
         currentTorque = -1
-        upToDate =
-            speed: false,
-            torque: false
         presets = {}
         children = []
         moveCallback = -> console.log "AX12 #{id} move finished"
@@ -20,27 +14,20 @@ ax12 = (driver) ->
                     return null
 
         result =
-            # send speed and torque (if needed) to the AX12
-            update: ->
-                return if id == 0
-                driver.goalSpeed(id, currentSpeed) unless upToDate.speed
-                driver.torque(id, currentTorque) unless upToDate.torque
-                upToDate.speed = upToDate.torque = true;
-
-            # set speed and torque are lazy, they don't actually change the value
-            # they both are in % (from 0 to 100)
-
             # set speed from -100 to 100 % (sign ignored in default mode)
             speed: (speed) ->
                 return currentSpeed unless speed?
-                upToDate.speed = speed == currentSpeed;
+
                 currentSpeed = speed
+                driver.goalSpeed(id, currentSpeed) if id != 0
                 child.speed(speed) for child in children
+
             # set torque from 0 to 100% (0 disables output drive)
             torque: (torque) ->
                 return currentTorque unless torque?
-                upToDate.torque = torque == currentTorque;
+
                 currentTorque = torque
+                driver.torque(id, currentTorque) if id != 0
                 child.torque(torque) for child in children
 
             LED: (status) -> driver.LED(id, status) if id != 0
@@ -56,7 +43,6 @@ ax12 = (driver) ->
             moveTo: (position, callback) ->
                 moveCallback = callback if callback?
                 if id != 0 # real AX12
-                    result.update()
                     driver.move(id, position, moveCallback);
                 else if children.length != 0 # abstract template : move all the real children
                     childrenLeft = children.length;
@@ -71,8 +57,6 @@ ax12 = (driver) ->
             # set to wheel mode (endless turn mode) and set speed, from -100 to 100%
             turn: (speed) ->
                 if id != 0 # real AX12
-                    upToDate.speed = true;
-                    result.update()
                     driver.turn(id, speed);
                 else if children.length != 0 # abstract template : move all the real children
                     child.turn(speed) for child in children
@@ -100,8 +84,8 @@ ax12 = (driver) ->
 
             create: (id) ->
                 newAX = create id
-                newAX.speed currentSpeed
-                newAX.torque currentTorque
+                newAX.speed currentSpeed unless currentSpeed == -2000
+                newAX.torque currentTorque unless currentTorque == -1
                 newAX.preset(k, v, yes) for k, v of presets
                 children.push newAX
                 return newAX

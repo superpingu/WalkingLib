@@ -31,89 +31,51 @@ describe 'AX12', ->
             expect(ax12(0).position()).to.be.null
             driver.position.should.not.have.been.called()
     describe '.speed()', ->
-        it 'should change current speed on update if ID isnt 0', ->
+        it 'should change current speed if ID isnt 0', ->
             servo = ax12(126)
             servo.speed(97)
-            servo.update()
             driver.goalSpeed.should.have.been.called.with(126, 97)
         it 'should return current speed when called without argument', ->
             servo = ax12(149)
             servo.speed(43)
             servo.speed().should.equal 43
-            driver.goalSpeed.should.not.have.been.called()
         it 'should not call anything if ID is 0', ->
             servo = ax12(0)
             servo.speed(50)
-            servo.update()
             driver.goalSpeed.should.not.have.been.called()
         it 'should change children speed if ID isnt 0', ->
             template = ax12(0)
             template.speed(20)
             servo = template.create(129)
             servo2 = template.create(127)
-            servo.update()
             driver.goalSpeed.should.have.been.called.with(129, 20)
             template.speed(50)
-            servo.update()
-            servo2.update()
             driver.goalSpeed.should.have.been.called.with(129, 50)
             driver.goalSpeed.should.have.been.called.with(127, 50)
     describe '.torque()', ->
-        it 'should change current torque on update if ID isnt 0', ->
+        it 'should change current torque if ID isnt 0', ->
             servo = ax12(126)
             servo.torque(50)
-            servo.update()
             driver.torque.should.have.been.called.with(126, 50)
         it 'should return current torque when called without argument', ->
             servo = ax12(148)
             servo.torque(43)
             servo.torque().should.equal 43
-            driver.torque.should.not.have.been.called()
         it 'should not call anything if ID is 0', ->
             servo = ax12(0)
             servo.torque(500)
-            servo.update()
             driver.torque.should.not.have.been.called()
         it 'should change children torque if ID isnt 0', ->
             template = ax12(0)
             template.torque(20)
             servo = template.create(129)
             servo2 = template.create(127)
-            servo.update()
             driver.torque.should.have.been.called.with(129, 20)
             template.torque(50)
-            servo.update()
-            servo2.update()
             driver.torque.should.have.been.called.with(129, 50)
             driver.torque.should.have.been.called.with(127, 50)
-    describe '.update()', ->
-        it 'should update speed and torque when changed', ->
-            servo = ax12(140)
-            servo.torque(20)
-            servo.speed(-50)
-            servo.update()
-            driver.goalSpeed.should.have.been.called.with(140, -50)
-            driver.torque.should.have.been.called.with(140, 20)
-        it 'shouldnt update if the values are up to date', ->
-            servo = ax12(140)
-            servo.torque(200)
-            servo.speed(500)
-            servo.update()
-            servo.update()
-            servo.torque(200)
-            servo.speed(500)
-            servo.update()
-            driver.goalSpeed.should.have.been.called.once()
-            driver.torque.should.have.been.called.once()
-        it 'shouldnt call anything if ID is 0', ->
-            template = ax12(0)
-            template.torque(200)
-            template.speed(500)
-            template.update()
-            driver.goalSpeed.should.not.have.been.called()
-            driver.torque.should.not.have.been.called()
     describe '.moveTo()', ->
-        it 'should update speed and torque and call driver\'s move()', (done) ->
+        it 'should call driver\'s move()', (done) ->
             servo = ax12(140)
             servo.torque(20)
             servo.speed(50)
@@ -140,13 +102,13 @@ describe 'AX12', ->
             callbacks[127]()
             callbacks[129]()
     describe '.turn()', ->
-        it 'should update torque and call driver\'s turn()', ->
+        it 'should call driver\'s turn()', ->
             servo = ax12(140)
             servo.torque 20
             servo.speed 50
             servo.turn 70
             driver.torque.should.have.been.called.with(140, 20)
-            driver.goalSpeed.should.not.have.been.called()
+            driver.goalSpeed.should.have.been.called.with(140, 50)
             driver.turn.should.have.been.with(140, 70)
         it 'should make all the children turn if AX12 is abstract', ->
             template = ax12(0)
