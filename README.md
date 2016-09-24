@@ -161,7 +161,7 @@ Returns 0 for no error, an error flags otherwise. See WalkingDriver for more inf
 ### Sequence ###
 
 To make complex action programming easier, it is possible to create sequences of
-instructions, that will executed automatically.
+instruction, that will executed automatically.
 
 Here is a simple example :
 
