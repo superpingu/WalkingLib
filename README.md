@@ -191,7 +191,7 @@ is called will be available in the returned sequence.
 
 #### sequence.then() ####
 Wait for all the previous actions to be completed before going on.
-Returns the sequence (is therefore chainable)
+Returns the sequence (is chainable).
 
 #### sequence.run() ####
 Run a function in the sequence. If the function calls a callback after completing
@@ -205,11 +205,16 @@ var seq = robot.sequence().run(function(callback) { /* ... */ })
     /* ... */
     .start();
 ```
+
+Returns the sequence (is chainable).
+
 #### sequence.done(callback) ####
 Set up a function called when the sequence is fully executed.
+Returns the sequence (is chainable).
 
 #### sequence.start() ####
 Start a sequence from the beginning. A sequence can be executed several times.
+Returns the sequence (is chainable).
 
 #### sequence.stop() ####
 Stop sequence execution.
