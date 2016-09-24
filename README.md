@@ -60,23 +60,23 @@ read.
 Returns motor battery voltage in volts.
 
 #### robot.logicBattery() ####
-(requires [Toolbox Board](https://github.com/TelecomParistoc/toolboxboard]))  
+(requires [Toolbox Board](https://github.com/TelecomParistoc/toolboxboard))  
 Returns logic battery voltage in volts.
 
 #### robot.LED(LEDnumber, state) ####
-(requires [Toolbox Board](https://github.com/TelecomParistoc/toolboxboard]))  
+(requires [Toolbox Board](https://github.com/TelecomParistoc/toolboxboard))  
 Set the state of a LED connected to Toolbox board LED connector.  
 **LEDnumber** : the LED to set, from 1 to 4  
 **state** : 1 for ON (5V), 0 for OFF (0V)
 
 #### robot.PWM(PWMnumber, dutyCycle) ####
-(requires (Toolbox Board)[https://github.com/TelecomParistoc/toolboxboard])  
+(requires [Toolbox Board](https://github.com/TelecomParistoc/toolboxboard))  
 Set the duty cycle of a PWM channel.  
 **PWMnumber** : the PWM channel to set, from 1 to 4  
 **dutyCycle** : duty cycle, from 0 to 255
 
 #### robot.button(number) ####
-(requires (Toolbox Board)[https://github.com/TelecomParistoc/toolboxboard])  
+(requires [Toolbox Board](https://github.com/TelecomParistoc/toolboxboard))  
 Returns the logical state of a button connected to Toolbox board button connector.  
 **number** : button number, from 1 to 3  
 
