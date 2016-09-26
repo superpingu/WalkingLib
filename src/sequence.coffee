@@ -71,6 +71,7 @@ module.exports = (robot) ->
     result.start = (callback) ->
         result.done callback if callback?
         stageExec = 0
+        result.then() if sequence[stage].length > 0
         nextStage()
         return result
     result.run = (func) ->

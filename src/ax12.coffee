@@ -76,7 +76,7 @@ ax12 = (driver) ->
                     result[name] = (callback) ->
                         result.torque preset.torque if preset.torque?
                         result.speed preset.speed if preset.speed?
-                        result.moveTo preset.position, callback if preset.position?
+                        result.moveTo(preset.position, callback) if preset.position?
 
             #import an array of presets
             presets: (presets) ->

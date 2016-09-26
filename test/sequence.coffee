@@ -16,6 +16,7 @@ describe 'sequence', ->
                 a: chai.spy(),
                 b: chai.spy((callback) -> cb2 = callback)
             move: (callback) -> cb = callback
+            move2: (callback) -> cb2 = callback
 
         seq = require('../lib/sequence')(robot)
         done()
@@ -31,8 +32,9 @@ describe 'sequence', ->
         robot.test.should.have.been.called.with("bla", "lol")
     describe '.then()', ->
         it 'should call the next stage when all functions called their callback', (done) ->
-            seq.test("bla", "lol").move().then().run(done).start()
+            seq.test("bla", "lol").move().move2().then().run(done).start()
             cb()
+            cb2()
     describe '.done()', ->
         it 'should call a callback after sequence has been competely executed', (done) ->
             seq.test("bla", "lol").done(done).start()
