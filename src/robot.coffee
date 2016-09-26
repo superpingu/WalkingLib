@@ -6,6 +6,9 @@ module.exports = =>
     toolbox.init()
     ax12.init 115200
 
+    # prevent node from exiting
+    setInterval((->), 10000)
+
     result =
         ax12: require('./ax12')(ax12)
 
@@ -20,5 +23,5 @@ module.exports = =>
         button: toolbox.button
 
         sequence: -> sequencer(result)
-        
+
     return result
