@@ -135,7 +135,7 @@ Position will be ignored if wheel is set to true.
 If omitted, wheel defaults to false. However, if wheel and position are omitted,
 AX12 will remain unchanged.  
 
-Preset can be later applied using ax12.<presetName>()
+Preset can be later applied using ax12.presetName()
 
 **force** : optional. When set to true, allows to replace an existing preset with the same name.
 
