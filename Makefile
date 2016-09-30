@@ -11,6 +11,7 @@ test:
 	mocha -c --compilers coffee:coffee-script/register
 
 link:
-	npm link walkingdriver
+	mkdir -p node_modules/
+	ln -s /usr/local/lib/node_modules/walkingdriver/ node_modules/
 
 .PHONY: all watch clean test link
