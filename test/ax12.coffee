@@ -82,8 +82,21 @@ describe 'AX12', ->
             servo.moveTo 24.7, done
             driver.torque.should.have.been.called.with(140, 20)
             driver.goalSpeed.should.have.been.called.with(140, 50)
-            driver.move.should.have.been.with(140, 24.7, done)
+            driver.move.should.have.been.with(140, 24.7, callbacks[140])
+            positions[140] = 24.7
             callbacks[140]()
+        it 'should retry if AX12 didn\'t reached its goal', (done) ->
+            servo = ax12(140)
+            servo.torque(20)
+            servo.speed(50)
+            servo.moveTo 24.7, done
+            driver.torque.should.have.been.called.with(140, 20)
+            driver.goalSpeed.should.have.been.called.with(140, 50)
+            driver.move.should.have.been.with(140, 24.7, callbacks[140])
+            positions[140] = 18
+            callbacks[140]()
+            callbacks[140].should.equal done
+            callbacks[140]() # second time it works anyway
         it 'should move all the children for an abstract AX12', (done) ->
             template = ax12(0)
             template.torque(20)
@@ -96,11 +109,12 @@ describe 'AX12', ->
             driver.goalSpeed.should.have.been.called.with(129, 50)
             driver.torque.should.have.been.called.with(127, 20)
             driver.goalSpeed.should.have.been.called.with(127, 50)
-            driver.move.should.have.been.called.with(127, 24.7)
-            driver.move.should.have.been.called.with(129, 24.7)
-
+            driver.move.should.have.been.called.with(127, 24.7, callbacks[127])
+            driver.move.should.have.been.called.with(129, 24.7, callbacks[129])
+            positions[127] = positions[129] = 24.7
             callbacks[127]()
             callbacks[129]()
+            
     describe '.turn()', ->
         it 'should call driver\'s turn()', ->
             servo = ax12(140)
@@ -133,7 +147,8 @@ describe 'AX12', ->
             servo.up done
             driver.torque.should.have.been.called.with(140, 30)
             driver.goalSpeed.should.have.been.called.with(140, 65)
-            driver.move.should.have.been.with(140, 24.7, done)
+            driver.move.should.have.been.with(140, 24.7, callbacks[140])
+            positions[140] = 24.7
             callbacks[140]()
         it 'should create a preset, which can be called to turn', ->
             servo = ax12(140)

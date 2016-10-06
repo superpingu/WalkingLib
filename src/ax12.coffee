@@ -43,14 +43,24 @@ ax12 = (driver) ->
             moveTo: (position, callback) ->
                 moveCallback = callback if callback?
                 if id != 0 # real AX12
-                    driver.move(id, position, moveCallback);
+                    if callback?
+                        moveCallback =  ->
+                            if Math.abs(driver.position(id) - position) < 1.5
+                                callback()
+                            else # move didn't succeed, retry once
+                                moveCallback = callback
+                                result.speed(currentSpeed)
+                                result.torque(currentTorque)
+                                driver.move id, position, moveCallback
+                    driver.move id, position, moveCallback
                 else if children.length != 0 # abstract template : move all the real children
                     childrenLeft = children.length;
                     # call the callback only when all the real children finished moving
                     childCallback = -> moveCallback() if --childrenLeft == 0
                     child.moveTo(position, childCallback) for child in children
                 else # abstract template without any child : call callback now
-                    moveCallback()
+                    moveCallback() if callback?
+
             cancelCallback: ->
                 driver.cancelCallback(id) if id != 0
 
@@ -84,8 +94,8 @@ ax12 = (driver) ->
 
             create: (id) ->
                 newAX = create id
-                newAX.speed currentSpeed unless currentSpeed == -2000
-                newAX.torque currentTorque unless currentTorque == -1
+                newAX.speed(currentSpeed) unless currentSpeed == -2000
+                newAX.torque(currentTorque) unless currentTorque == -1
                 newAX.preset(k, v, yes) for k, v of presets
                 children.push newAX
                 return newAX
