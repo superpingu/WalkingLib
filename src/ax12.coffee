@@ -49,8 +49,8 @@ ax12 = (driver) ->
                                 callback()
                             else # move didn't succeed, retry once
                                 moveCallback = callback
-                                result.speed(currentSpeed)
-                                result.torque(currentTorque)
+                                result.speed(currentSpeed) unless currentSpeed == -2000
+                                result.torque(currentTorque) unless currentTorque == -1
                                 driver.move id, position, moveCallback
                     driver.move id, position, moveCallback
                 else if children.length != 0 # abstract template : move all the real children
